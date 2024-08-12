@@ -8,7 +8,7 @@ class ChatService {
 
   //Method to get stream of user from firestore
   Stream<List<Map<String, dynamic>>> getUsers() {
-    return _firestore.collection('users').snapshots().map((snapshot) {
+    return _firestore.collection('Users').snapshots().map((snapshot) {
       //Convert firestore documents to list of maps
       return snapshot.docs.map((doc) {
         return doc.data();
