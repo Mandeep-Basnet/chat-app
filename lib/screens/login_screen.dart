@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/auth/authService.dart';
+import 'package:flutter_application_2/services/auth/auth_service.dart';
 import 'package:flutter_application_2/components/my_button.dart';
 import 'package:flutter_application_2/components/my_password_field.dart';
 import 'package:flutter_application_2/components/my_textfield.dart';
@@ -79,7 +79,7 @@ class LoginScreen extends StatelessWidget {
           ),
 
           //Login Button
-          MyButton(text: 'Login', onPressed: () {}),
+          MyButton(text: 'Login', onPressed: () => login(context)),
 
           //Side box
           SizedBox(

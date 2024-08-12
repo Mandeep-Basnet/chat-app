@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/services/auth/auth_service.dart';
 import 'package:flutter_application_2/components/my_button.dart';
 import 'package:flutter_application_2/components/my_password_field.dart';
 import 'package:flutter_application_2/components/my_textfield.dart';
@@ -10,6 +11,46 @@ class SignupScreen extends StatelessWidget {
       TextEditingController();
   final void Function()? onPressed;
   SignupScreen({super.key, required this.onPressed});
+  //Sign Up Method
+  void signUp(BuildContext context) async {
+    //Validate Password i.e. if both password and confirm is same
+    if (_passwordController.text != _confirmPasswordController.text) {
+      //Show Error
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Passwords do not match"),
+        duration: Duration(seconds: 2),
+      ));
+      return;
+    }
+    //Show Loading Indicator
+    showDialog(
+        context: context,
+        builder: (context) => Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ));
+    //auth Service
+    final authService = AuthService();
+    //Try Sign Up
+    try {
+      //Sign Up
+      await authService.signUpWithEmailPassword(
+          _emailController.text, _passwordController.text);
+    }
+    //Catch Error
+    catch (e) {
+      //Show Error
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+        ),
+        duration: const Duration(seconds: 2),
+      ));
+      //hide loading indicator
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +67,7 @@ class SignupScreen extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiary,
           ),
           //Side box
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -37,7 +78,7 @@ class SignupScreen extends StatelessWidget {
                 TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
           ),
           //Side box
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -49,7 +90,7 @@ class SignupScreen extends StatelessWidget {
               keyboardType: TextInputType.emailAddress),
 
           //Side box
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -58,7 +99,7 @@ class SignupScreen extends StatelessWidget {
               hintText: 'Enter your password', controller: _passwordController),
 
           //Side box
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -68,15 +109,15 @@ class SignupScreen extends StatelessWidget {
               controller: _confirmPasswordController),
 
           //Side box
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
           //Sign Up Button
-          MyButton(text: 'Sign Up', onPressed: () {}),
+          MyButton(text: 'Sign Up', onPressed: () => signUp(context)),
 
           //Side box
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
